@@ -1,0 +1,26 @@
+Convolution:Convolution is a mathematical operation, in which we take a kernel and apply it over small part of image(or data) 
+			to extract the desired features as specified by kernel. It has huge application in image processing for extracting different 
+			types of features like edge, gradient, etc depending on type of kernel used.
+			For example: A = (0,0,1,0,0) B = (0,1,0), then C= Conv(A,B) will become 1 only when it encounters (0,1,0) in A, i.e. we are 
+			able to extract desired feature using convolution. 
+Filters/Kernels: It is a small matrix that we will be using in convolution. It is used to specify what type of feature the user 
+				or machine wants to extract from given image. In the example above B is called as kernel, we wanted to check if the image A has
+				data which match 0,1,0 so we used this kernel. Each kernel has specific operation, like one kernel will be specialized to extract
+				vertical edges or horizontal edges or line tilted at 45degree, etc.
+Epochs: Epoch is one complete cycle in which the machine has seen complete data during training. So if we have 10000 images for 
+		training, one epoch is completed after training on 10K images, 2 epoch are completed after 20k iteration, etc.
+1x1 Convolution: It is specialized convolution which is used to reduce/increase number of channels in volume of data. However, 
+				this convolution can also be used as scalar multiple for image data, but it is rarely used like this. By volume, i mean height,
+				width and channels in image feature map. 
+3x3 Convolution: It is the most frequently used kernel for feature extraction from image data using convolution. It extracts data from height and 
+				width of image, however it doesn't affect number of channels in image. Each 3x3 kernel is specialized for extracting one kind
+				of feature from image.
+Feature Maps: After convolving image data with kernel what we get is featuremap. It is mapping in which certain kind of feature is found in entire 
+             image. Suppose our kernel is specialized to find human nose, then feature map will consist of only nose in image and other parts of
+			 image will be zeroed out in feature map.
+Activation Function: Activation function asre link between two layers in any network. It adds non linearities in network due to which backpropogation
+					becomes possible. In network without activation function, even if we append 10 layers, they will just act as scalar multiplication 
+					of each other and eventually it will act as single layer so not possible to extract deep features without activation.
+					Ex: Relu, tanh, etc.
+Receptive Field: It can be defined as region in input data in which the kernel is looking for certain feature. For sing 3x3 kernel its receptive field 
+                is 3x3. for 2 cascaded 3x3 kernel receptive field is 5x5. for 3, it is 7x7, etc.
