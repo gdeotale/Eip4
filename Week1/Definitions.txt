@@ -22,5 +22,5 @@ Activation Function: Activation function asre link between two layers in any net
 					becomes possible. In network without activation function, even if we append 10 layers, they will just act as scalar multiplication 
 					of each other and eventually it will act as single layer so not possible to extract deep features without activation.
 					Ex: Relu, tanh, etc.
-Receptive Field: It can be defined as region in input data in which the kernel is looking for certain feature. For sing 3x3 kernel its receptive field 
+Receptive Field: It can be defined as region in input space in which the kernel is looking for certain feature. For single 3x3 kernel its receptive field 
                 is 3x3. for 2 cascaded 3x3 kernel receptive field is 5x5. for 3, it is 7x7, etc.
