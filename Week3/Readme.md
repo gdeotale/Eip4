@@ -1,12 +1,12 @@
 1. Final Validation accuracy for Base Network
-	This is for base network given by you
-	Epoch 50/50
-	390/390 [==============================] - 8s 20ms/step - loss: 0.3274 - acc: 0.8899 - val_loss: 0.5715 - val_acc: 0.8275
-	Accuracy on test data is: 82.75
-	Following is on my network
-	Epoch 00046: LearningRateScheduler setting learning rate to 0.0325626832.
-	390/390 [==============================] - 32s 82ms/step - loss: 0.4780 - acc: 0.8333 - val_loss: 0.4863 - val_acc: 0.8343
-	Accuracy on test data is: 83.35
+a. This is for base network given by you
+   Epoch 50/50
+   390/390 [==============================] - 8s 20ms/step - loss: 0.3274 - acc: 0.8899 - val_loss: 0.5715 - val_acc: 0.8275
+   Accuracy on test data is: 82.75
+b. Following is on my network
+   Epoch 00046: LearningRateScheduler setting learning rate to 0.0325626832.
+   390/390 [==============================] - 32s 82ms/step - loss: 0.4780 - acc: 0.8333 - val_loss: 0.4863 - val_acc: 0.8343
+   Accuracy on test data is: 83.35
 
 2. Your model definition (model.add... ) with output channel size and receptive field
 model1 = Sequential()
