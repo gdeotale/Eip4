@@ -1,63 +1,104 @@
 1. Final Validation accuracy for Base Network
+
 a. This is for base network given by you
    Epoch 50/50
    390/390 [==============================] - 8s 20ms/step - loss: 0.3274 - acc: 0.8899 - val_loss: 0.5715 - val_acc: 0.8275
    Accuracy on test data is: 82.75
+
 b. Following is on my network
    Epoch 00046: LearningRateScheduler setting learning rate to 0.0325626832.
    390/390 [==============================] - 32s 82ms/step - loss: 0.4780 - acc: 0.8333 - val_loss: 0.4863 - val_acc: 0.8343
    Accuracy on test data is: 83.35
 
 2. Your model definition (model.add... ) with output channel size and receptive field
+
 model1 = Sequential()
+
 model1.add(SeparableConvolution2D(filters = 48, kernel_size=(3, 3), 
            strides = (1,1), depth_multiplier = 1,
             input_shape = (32,32,3))) #Receptive Field = 3x3     #output=(32+2*0-3)+1=30
+
 model1.add(BatchNormalization())   #Receptive Field = 3x3     #output=(32+2*0-3)+1=30
+
 model1.add(Activation('relu'))    #Receptive Field = 3x3     #output=(32+2*0-3)+1=30
+
 model1.add(SeparableConvolution2D(96, (3, 3), use_bias=False)) #Receptive field = 5x5 #output=(30+2*0-3)+1=28
+
 model1.add(BatchNormalization()) #Receptive field = 5x5 #output=(30+2*0-3)+1=28
+
 model1.add(Activation('relu')) #Receptive field = 5x5 #output=(30+2*0-3)+1=28
+
 model1.add(SeparableConvolution2D(96, (3, 3), padding='same', use_bias=False)) #Receptive field = 7x7 #output=(30+2*1-3)+1=28
+
 model1.add(BatchNormalization()) #Receptive field = 7x7 #output=(30+2*1-3)+1=28
+
 model1.add(Activation('relu')) #Receptive field = 7x7 #output=(30+2*1-3)+1=28
+
 model1.add(SeparableConvolution2D(192, (3, 3), use_bias=False)) #Receptive field = 9x9 #output=(28+2*0-3)+1=26
+
 model1.add(BatchNormalization()) #Receptive field = 9x9 #output=(28+2*0-3)+1=26
+
 model1.add(Activation('relu')) #Receptive field = 9x9 #output=(28+2*0-3)+1=26
+
 model1.add(Dropout(0.25)) #Receptive field = 9x9 #output=(28+2*0-3)+1=26
+
 model1.add(SeparableConvolution2D(48, (1, 1), use_bias=False)) #Receptive field = 9x9 #output=(26+2*0-1)+1=26
+
 model1.add(MaxPooling2D(pool_size=(2, 2))) #Receptive field = 10x10 #output=(26+2*1-2)/2 +1 = 13 
+
 model1.add(SeparableConvolution2D(48, (3, 3), use_bias=False)) #Receptive field = 14x14 #output=(13+2*0-3)+1=11
+
 model1.add(BatchNormalization()) #Receptive field = 14x14 #output=(13+2*0-3)+1=11
+
 model1.add(Activation('relu')) #Receptive field = 14x14 #output=(13+2*0-3)+1=11
+
 model1.add(SeparableConvolution2D(96, (3, 3), use_bias=False)) #Receptive field = 18x18 #output=(11+2*0-3)+1=9
+
 model1.add(BatchNormalization()) #Receptive field = 18x18 #output=(11+2*0-3)+1=9
+
 model1.add(Activation('relu')) #Receptive field = 18x18 #output=(11+2*0-3)+1=9
+
 model1.add(SeparableConvolution2D(96, (3, 3), padding='same', use_bias=False)) #Receptive field = 22x22 #output=(9+2*1-3)+1=9
+
 model1.add(BatchNormalization()) #Receptive field = 22x22 #output=(9+2*1-3)+1=9
+
 model1.add(Activation('relu')) #Receptive field = 22x22 #output=(9+2*1-3)+1=9
+
 model1.add(SeparableConvolution2D(192, (3, 3), use_bias=False)) #Receptive field = 26x26 #output=(9+2*0-3)+1=7
+
 model1.add(BatchNormalization()) #Receptive field = 26x26 #output=(9+2*0-3)+1=7
+
 model1.add(Activation('relu')) #Receptive field = 26x26 #output=(9+2*0-3)+1=7
+
 model1.add(Dropout(0.25)) #Receptive field = 26x26 #output=(9+2*0-3)+1=7
+
 model1.add(MaxPooling2D(pool_size=(2, 2))) #Receptive field = 28x28 #output=1+(7-2)/2=3
+
 model1.add(SeparableConvolution2D(num_classes, 3, 3)) 
+
 model1.add(BatchNormalization())
+
 model1.add(Flatten())
+
 model1.add(Activation('softmax'))
+
 model1.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
+
 from keras.preprocessing.image import ImageDataGenerator
+
 from keras.callbacks import LearningRateScheduler
+
 ############Added augmentation here
-datagen = ImageDataGenerator(zoom_range=0.1, 
-                             rotation_range=15,
-                 width_shift_range=0.1, height_shift_range=0.1,
+
+datagen = ImageDataGenerator(zoom_range=0.1, rotation_range=15,  width_shift_range=0.1, height_shift_range=0.1,
                  horizontal_flip=True)
 
 def scheduler(epoch, lr):
   return round(0.5 * 1/(1 + 0.319 * epoch), 10)
+
 ############ Added scheduler here
+
 model_info = model1.fit_generator(datagen.flow(train_features, train_labels, batch_size = 128),
                                  samples_per_epoch = train_features.shape[0], nb_epoch = 50, 
                                  validation_data = (test_features, test_labels), verbose=1,
