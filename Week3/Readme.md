@@ -26,9 +26,7 @@ model1.add(BatchNormalization()) #Receptive field = 9x9 #output=(28+2*0-3)+1=26
 model1.add(Activation('relu')) #Receptive field = 9x9 #output=(28+2*0-3)+1=26
 model1.add(Dropout(0.25)) #Receptive field = 9x9 #output=(28+2*0-3)+1=26
 model1.add(SeparableConvolution2D(48, (1, 1), use_bias=False)) #Receptive field = 9x9 #output=(26+2*0-1)+1=26
-
 model1.add(MaxPooling2D(pool_size=(2, 2))) #Receptive field = 10x10 #output=(26+2*1-2)/2 +1 = 13 
-
 model1.add(SeparableConvolution2D(48, (3, 3), use_bias=False)) #Receptive field = 14x14 #output=(13+2*0-3)+1=11
 model1.add(BatchNormalization()) #Receptive field = 14x14 #output=(13+2*0-3)+1=11
 model1.add(Activation('relu')) #Receptive field = 14x14 #output=(13+2*0-3)+1=11
@@ -42,17 +40,11 @@ model1.add(SeparableConvolution2D(192, (3, 3), use_bias=False)) #Receptive field
 model1.add(BatchNormalization()) #Receptive field = 26x26 #output=(9+2*0-3)+1=7
 model1.add(Activation('relu')) #Receptive field = 26x26 #output=(9+2*0-3)+1=7
 model1.add(Dropout(0.25)) #Receptive field = 26x26 #output=(9+2*0-3)+1=7
-
 model1.add(MaxPooling2D(pool_size=(2, 2))) #Receptive field = 28x28 #output=1+(7-2)/2=3
-
 model1.add(SeparableConvolution2D(num_classes, 3, 3)) 
 model1.add(BatchNormalization())
-#model1.add(Dropout(0.25))
-
 model1.add(Flatten())
 model1.add(Activation('softmax'))
-
-# Compile the model
 model1.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 from keras.preprocessing.image import ImageDataGenerator
@@ -65,19 +57,11 @@ datagen = ImageDataGenerator(zoom_range=0.1,
 
 def scheduler(epoch, lr):
   return round(0.5 * 1/(1 + 0.319 * epoch), 10)
-
-# Train the model   
 ############ Added scheduler here
 model_info = model1.fit_generator(datagen.flow(train_features, train_labels, batch_size = 128),
                                  samples_per_epoch = train_features.shape[0], nb_epoch = 50, 
                                  validation_data = (test_features, test_labels), verbose=1,
                                   callbacks=[LearningRateScheduler(scheduler, verbose=1)])
-end = time.time()
-print ("Model took %0.2f seconds to train"%(end - start))
-# plot model history
-plot_model_history(model_info)
-# compute test accuracy
-print ("Accuracy on test data is: %0.2f"%accuracy(test_features, test_labels, model1))
 
 3. Your 50 epoch logs
 
